@@ -150,6 +150,18 @@ theme.cal = lain.widget.cal({
 
 -- Battery
 local baticon = wibox.widget.imagebox(theme.widget_battery)
+local battooltip = awful.tooltip({
+    objects = { baticon },
+    margin_leftright = dpi(15),
+    margin_topbottom = dpi(15)
+})
+-- battooltip.wibox.fg = theme.fg_normal
+battooltip.wibox.bg = theme.bg_normal
+battooltip.textbox.font = theme.font
+battooltip.timeout = 0
+battooltip:set_shape(function(cr, width, height)
+    gears.shape.infobubble(cr, width, height, corner_radius, arrow_size, width - dpi(200))
+end)
 local bat = lain.widget.bat({
     battery = "axp20x-battery",
     ac = "axp22x-ac",
@@ -165,9 +177,13 @@ local bat = lain.widget.bat({
                 baticon:set_image(theme.widget_battery)
             end
             widget:set_markup(markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            battooltip:set_markup("Battery: " .. bat_now.perc .. "%\n" ..
+                                   "Status: " .. bat_now.status .. "\n" ..
+                                   "Remaining: " .. bat_now.time)
         else
             widget:set_markup(markup.font(theme.font, " AC "))
             baticon:set_image(theme.widget_ac)
+            battooltip:set_markup("AC adapter: connected")
         end
     end
 })
@@ -199,17 +215,7 @@ theme.volume.widget:buttons(awful.util.table.join(
                                      theme.volume.update()
                                end)
 ))
-
--- Net
--- local neticon = wibox.widget.imagebox(theme.widget_net)
--- local net_flow = lain.widget.net({
---     settings = function()
---         widget:set_markup(markup.font(theme.font,
---                           markup("#7AC82E", " " .. string.format("%06.1f", net_now.received))
---                           .. " " ..
---                           markup("#46A8C3", " " .. string.format("%06.1f", net_now.sent) .. " ")))
---     end
--- })
+theme.volume.widget:connect_signal("button::press", function() awful.spawn(string.format("%s -e alsamixer", awful.util.terminal)) end)
 
 -- -- Wifi carrier and signal strength
 local wifi_icon = wibox.widget.imagebox(theme.widget_net)
@@ -227,7 +233,8 @@ local wifitooltip = awful.tooltip({
     margin_leftright = dpi(15),
     margin_topbottom = dpi(15)
 })
-wifitooltip.wibox.fg = theme.bg_normal
+-- wifitooltip.wibox.fg = theme.fg_normal
+-- wifitooltip.wibox.bg = theme.bg_normal
 wifitooltip.textbox.font = theme.font
 wifitooltip.timeout = 0
 wifitooltip:set_shape(function(cr, width, height)
@@ -274,33 +281,6 @@ local net = lain.widget.net {
     end
 }
 
--- local net = awful.widget.watch(
---     { awful.util.shell, "-c", "awk 'NR==3 {printf(\"%d-%.0f\\n\",$2, $3*10/7)}' /proc/net/wireless; iw dev wlan0 link" },
---     2,
---     function(widget, stdout)
---         local carrier, perc = stdout:match("(%d)-(%d+)")
---         local tiptext = stdout:gsub("(%d)-(%d+)", ""):gsub("%s+$", "")
---         perc = tonumber(perc)
-
---         if carrier == "1" or not perc then
---             wificon:set_image(theme.wifidisc)
---             wifitooltip:set_markup("No carrier")
---         else
---             if perc <= 5 then
---                 wificon:set_image(theme.wifinone)
---             elseif perc <= 25 then
---                 wificon:set_image(theme.wifilow)
---             elseif perc <= 50 then
---                 wificon:set_image(theme.wifimed)
---             elseif perc <= 75 then
---                 wificon:set_image(theme.wifihigh)
---             else
---                 wificon:set_image(theme.wififull)
---             end
---             wifitooltip:set_markup(tiptext)
---         end
---     end
--- )
 wifi_icon:connect_signal("button::press", function() awful.spawn("wpa_gui") end)
 net.widget:connect_signal("button::press", function() awful.spawn("wpa_gui") end)
 net_flow.widget:connect_signal("button::press", function() awful.spawn(string.format("%s -e wavemon", awful.util.terminal)) end)
