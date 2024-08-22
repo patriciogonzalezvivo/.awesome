@@ -1,12 +1,12 @@
-[submodule "icons/numix-icon-theme"]
-	path = icons/numix-icon-theme
-	url = https://github.com/numixproject/numix-icon-theme
-[submodule "icons/numix-icon-theme-circle"]
-	path = icons/numix-icon-theme-circle
-	url = https://github.com/numixproject/numix-icon-theme-circle
 [submodule "themes/Numix"]
 	path = themes/Numix
 	url = https://github.com/shimmerproject/Numix
 [submodule "themes/matcha"]
 	path = themes/matcha
 	url = https://github.com/vinceliuice/matcha.git
+[submodule "icons/numix-icon-theme-circle"]
+	path = icons/numix-icon-theme-circle
+	url = https://github.com/numixproject/numix-icon-theme-circle
+[submodule "icons/numix-icon-theme"]
+	path = icons/numix-icon-theme
+	url = https://github.com/numixproject/numix-icon-theme

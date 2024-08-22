@@ -12,8 +12,8 @@ git submodule update
 
 # create symbolic links to the icons and themes
 cd ~
-ln -s ~/.awesome/icons .icons
-ln -s ~/.awesome/themes .themes
+ln -sf ~/.awesome/icons .icons
+ln -sf ~/.awesome/themes .themes
 
 # replace the default awesome configuration
 if [ -d ~/.config/awesome ]; then
@@ -21,8 +21,8 @@ if [ -d ~/.config/awesome ]; then
 fi
 
 cd ~/.config/
-ln -s ~/.awesome/awesome awesome
-ln -s ~/.awesome/compton.conf compton.conf
+ln -sf ~/.awesome/awesome awesome
+ln -sf ~/.awesome/compton.conf compton.conf
 
 cd ~
 
