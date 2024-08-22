@@ -1,3 +1,5 @@
+Awesome setup
+
 # Install
 
 ```bash
