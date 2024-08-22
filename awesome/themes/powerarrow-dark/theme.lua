@@ -49,23 +49,29 @@ theme.layout_max                                = theme.dir .. "/icons/max.png"
 theme.layout_fullscreen                         = theme.dir .. "/icons/fullscreen.png"
 theme.layout_magnifier                          = theme.dir .. "/icons/magnifier.png"
 theme.layout_floating                           = theme.dir .. "/icons/floating.png"
+
 theme.widget_ac                                 = theme.dir .. "/icons/ac.png"
 theme.widget_battery                            = theme.dir .. "/icons/battery.png"
 theme.widget_battery_low                        = theme.dir .. "/icons/battery_low.png"
 theme.widget_battery_empty                      = theme.dir .. "/icons/battery_empty.png"
+
 theme.widget_mem                                = theme.dir .. "/icons/mem.png"
 theme.widget_cpu                                = theme.dir .. "/icons/cpu.png"
 theme.widget_temp                               = theme.dir .. "/icons/temp.png"
 theme.widget_net                                = theme.dir .. "/icons/net.png"
 theme.widget_hdd                                = theme.dir .. "/icons/hdd.png"
+
 theme.widget_music                              = theme.dir .. "/icons/note.png"
 theme.widget_music_on                           = theme.dir .. "/icons/note_on.png"
+
 theme.widget_vol                                = theme.dir .. "/icons/vol.png"
 theme.widget_vol_low                            = theme.dir .. "/icons/vol_low.png"
 theme.widget_vol_no                             = theme.dir .. "/icons/vol_no.png"
 theme.widget_vol_mute                           = theme.dir .. "/icons/vol_mute.png"
+
 theme.widget_mail                               = theme.dir .. "/icons/mail.png"
 theme.widget_mail_on                            = theme.dir .. "/icons/mail_on.png"
+
 theme.wifidisc                                  = theme.dir .. "/wireless-disconnected.png"
 theme.wififull                                  = theme.dir .. "/wireless-full.png"
 theme.wifihigh                                  = theme.dir .. "/wireless-high.png"
@@ -118,35 +124,35 @@ theme.cal = lain.widget.cal({
     }
 })
 
--- MEM
-local memicon = wibox.widget.imagebox(theme.widget_mem)
-local mem = lain.widget.mem({
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. mem_now.used .. "MB "))
-    end
-})
+-- -- MEM
+-- local memicon = wibox.widget.imagebox(theme.widget_mem)
+-- local mem = lain.widget.mem({
+--     settings = function()
+--         widget:set_markup(markup.font(theme.font, " " .. mem_now.used .. "MB "))
+--     end
+-- })
 
--- CPU
-local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
-local cpu = lain.widget.cpu({
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
-    end
-})
+-- -- CPU
+-- local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
+-- local cpu = lain.widget.cpu({
+--     settings = function()
+--         widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
+--     end
+-- })
 
--- Coretemp
-local tempicon = wibox.widget.imagebox(theme.widget_temp)
-local temp = lain.widget.temp({
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
-    end
-})
+-- -- Coretemp
+-- local tempicon = wibox.widget.imagebox(theme.widget_temp)
+-- local temp = lain.widget.temp({
+--     settings = function()
+--         widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
+--     end
+-- })
 
 -- Battery
 local baticon = wibox.widget.imagebox(theme.widget_battery)
 local bat = lain.widget.bat({
-    --battery = "axp20x-battery",
-    --ac = "axp20x-usb",
+    battery = "axp20x-battery",
+    ac = "axp22x-ac",
     settings = function()
         if bat_now.status and bat_now.status ~= "N/A" then
             if bat_now.ac_status == 1 then
@@ -195,8 +201,20 @@ theme.volume.widget:buttons(awful.util.table.join(
 ))
 
 -- Net
-local neticon = wibox.widget.imagebox(theme.widget_net)
-local net = lain.widget.net({
+-- local neticon = wibox.widget.imagebox(theme.widget_net)
+-- local net_flow = lain.widget.net({
+--     settings = function()
+--         widget:set_markup(markup.font(theme.font,
+--                           markup("#7AC82E", " " .. string.format("%06.1f", net_now.received))
+--                           .. " " ..
+--                           markup("#46A8C3", " " .. string.format("%06.1f", net_now.sent) .. " ")))
+--     end
+-- })
+
+-- -- Wifi carrier and signal strength
+local wifi_icon = wibox.widget.imagebox(theme.widget_net)
+local eth_icon = wibox.widget.imagebox()
+local net_flow = lain.widget.net({
     settings = function()
         widget:set_markup(markup.font(theme.font,
                           markup("#7AC82E", " " .. string.format("%06.1f", net_now.received))
@@ -204,12 +222,8 @@ local net = lain.widget.net({
                           markup("#46A8C3", " " .. string.format("%06.1f", net_now.sent) .. " ")))
     end
 })
-
--- Wifi carrier and signal strength
-local wificon = wibox.widget.imagebox(theme.wifidisc)
 local wifitooltip = awful.tooltip({
-    -- objects = { wificon },
-    objects = { net.widget },
+    objects = { wifi_icon, eth_icon, net_flow.widget },
     margin_leftright = dpi(15),
     margin_topbottom = dpi(15)
 })
@@ -219,36 +233,77 @@ wifitooltip.timeout = 0
 wifitooltip:set_shape(function(cr, width, height)
     gears.shape.infobubble(cr, width, height, corner_radius, arrow_size, width - dpi(200))
 end)
-local mywifisig = awful.widget.watch(
-    { awful.util.shell, "-c", "awk 'NR==3 {printf(\"%d-%.0f\\n\",$2, $3*10/7)}' /proc/net/wireless; iw dev wlan0 link" },
-    2,
-    function(widget, stdout)
-        local carrier, perc = stdout:match("(%d)-(%d+)")
-        local tiptext = stdout:gsub("(%d)-(%d+)", ""):gsub("%s+$", "")
-        perc = tonumber(perc)
 
-        if carrier == "1" or not perc then
-            wificon:set_image(theme.wifidisc)
-            wifitooltip:set_markup("No carrier")
-        else
-            if perc <= 5 then
-                wificon:set_image(theme.wifinone)
-            elseif perc <= 25 then
-                wificon:set_image(theme.wifilow)
-            elseif perc <= 50 then
-                wificon:set_image(theme.wifimed)
-            elseif perc <= 75 then
-                wificon:set_image(theme.wifihigh)
+local net = lain.widget.net {
+    notify = "off",
+    wifi_state = "on",
+    eth_state = "on",
+    settings = function()
+        local eth0 = net_now.devices.eth0
+        if eth0 then
+            if eth0.ethernet then
+                eth_icon:set_image(theme.ethon)
             else
-                wificon:set_image(theme.wififull)
+                eth_icon:set_image()
             end
-            wifitooltip:set_markup(tiptext)
+        end
+
+        local wlan0 = net_now.devices.wlan0
+        if wlan0 then
+            if wlan0.wifi then
+                local signal = wlan0.signal
+                if signal < -83 then
+                    wifi_icon:set_image(theme.wifilow)
+                elseif signal < -70 then
+                    wifi_icon:set_image(theme.wifimed)
+                elseif signal < -53 then
+                    wifi_icon:set_image(theme.wifihigh)
+                elseif signal >= -53 then
+                    wifi_icon:set_image(theme.wififull)
+                end
+                -- save the result of `iw dev wlan0 link` in a variable
+                local iw = io.popen("iw dev wlan0 link")
+                local iw_output = iw:read("*all")
+                iw:close()
+                wifitooltip:set_markup(iw_output)
+            else
+                wifi_icon:set_image()
+                wifitooltip:set_markup("No carrier")
+            end
         end
     end
-)
--- wificon:connect_signal("button::press", function() awful.spawn(string.format("%s -e wavemon", awful.util.terminal)) end)
-neticon:connect_signal("button::press", function() awful.spawn("wpa_gui") end)
+}
+
+-- local net = awful.widget.watch(
+--     { awful.util.shell, "-c", "awk 'NR==3 {printf(\"%d-%.0f\\n\",$2, $3*10/7)}' /proc/net/wireless; iw dev wlan0 link" },
+--     2,
+--     function(widget, stdout)
+--         local carrier, perc = stdout:match("(%d)-(%d+)")
+--         local tiptext = stdout:gsub("(%d)-(%d+)", ""):gsub("%s+$", "")
+--         perc = tonumber(perc)
+
+--         if carrier == "1" or not perc then
+--             wificon:set_image(theme.wifidisc)
+--             wifitooltip:set_markup("No carrier")
+--         else
+--             if perc <= 5 then
+--                 wificon:set_image(theme.wifinone)
+--             elseif perc <= 25 then
+--                 wificon:set_image(theme.wifilow)
+--             elseif perc <= 50 then
+--                 wificon:set_image(theme.wifimed)
+--             elseif perc <= 75 then
+--                 wificon:set_image(theme.wifihigh)
+--             else
+--                 wificon:set_image(theme.wififull)
+--             end
+--             wifitooltip:set_markup(tiptext)
+--         end
+--     end
+-- )
+wifi_icon:connect_signal("button::press", function() awful.spawn("wpa_gui") end)
 net.widget:connect_signal("button::press", function() awful.spawn("wpa_gui") end)
+net_flow.widget:connect_signal("button::press", function() awful.spawn(string.format("%s -e wavemon", awful.util.terminal)) end)
 
 -- Separators
 local spr     = wibox.widget.textbox(' ')
@@ -318,9 +373,10 @@ function theme.at_screen_connect(s)
             baticon,
             bat.widget,
             arrl_ld,
-            wibox.container.background(wificon, theme.bg_focus),
-            wibox.container.background(neticon, theme.bg_focus),
+            wibox.container.background(wifi_icon, theme.bg_focus),
+            wibox.container.background(eth_icon, theme.bg_focus),
             wibox.container.background(net.widget, theme.bg_focus),
+            wibox.container.background(net_flow.widget, theme.bg_focus),
             arrl_dl,
             clock,
             spr,
