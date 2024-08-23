@@ -20,50 +20,50 @@ root.buttons(mytable.join(
 
 -- Key bindings
 globalkeys = mytable.join(
-    -- Destroy all notifications
-    awful.key({ "Control",           }, "space", function() naughty.destroy_all_notifications() end,
-              {description = "destroy all notifications", group = "hotkeys"}),
+    -- -- Destroy all notifications
+    -- awful.key({ "Control",           }, "space", function() naughty.destroy_all_notifications() end,
+    --           {description = "destroy all notifications", group = "hotkeys"}),
 
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
     awful.key({ keys.alt }, "p", function() os.execute("screenshot") end,
               {description = "take a screenshot", group = "hotkeys"}),
 
-    -- X screen locker
-    awful.key({ keys.alt, "Control" }, "l", function () os.execute(scrlocker) end,
-              {description = "lock screen", group = "hotkeys"}),
+    -- -- X screen locker
+    -- awful.key({ keys.alt, "Control" }, "l", function () os.execute(scrlocker) end,
+    --           {description = "lock screen", group = "hotkeys"}),
 
     -- Show help
     awful.key({ keys.mod,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
 
     -- Tag browsing
-    awful.key({ keys.mod,           }, "Left",   awful.tag.viewprev,
+    awful.key({ "Control",           }, "Left",   awful.tag.viewprev,
               {description = "view previous", group = "tag"}),
-    awful.key({ keys.mod,           }, "Right",  awful.tag.viewnext,
+    awful.key({ "Control",           }, "Right",  awful.tag.viewnext,
               {description = "view next", group = "tag"}),
-    awful.key({ keys.mod,           }, "Escape", awful.tag.history.restore,
-              {description = "go back", group = "tag"}),
+    -- awful.key({ "Control",          }, "Escape", awful.tag.history.restore,
+    --           {description = "go back", group = "tag"}),
 
-    -- Non-empty tag browsing
-    awful.key({ keys.alt }, "Left", function () lain.util.tag_view_nonempty(-1) end,
-              {description = "view  previous nonempty", group = "tag"}),
-    awful.key({ keys.alt }, "Right", function () lain.util.tag_view_nonempty(1) end,
-              {description = "view  previous nonempty", group = "tag"}),
+    -- -- Non-empty tag browsing
+    -- awful.key({ keys.alt }, "Left", function () lain.util.tag_view_nonempty(-1) end,
+    --           {description = "view  previous nonempty", group = "tag"}),
+    -- awful.key({ keys.alt }, "Right", function () lain.util.tag_view_nonempty(1) end,
+    --           {description = "view  previous nonempty", group = "tag"}),
 
-    -- Default client focus
-    awful.key({ keys.alt,           }, "j",
-        function ()
-            awful.client.focus.byidx( 1)
-        end,
-        {description = "focus next by index", group = "client"}
-    ),
-    awful.key({ keys.alt,           }, "k",
-        function ()
-            awful.client.focus.byidx(-1)
-        end,
-        {description = "focus previous by index", group = "client"}
-    ),
+    -- -- Default client focus
+    -- awful.key({ keys.alt,           }, "j",
+    --     function ()
+    --         awful.client.focus.byidx( 1)
+    --     end,
+    --     {description = "focus next by index", group = "client"}
+    -- ),
+    -- awful.key({ keys.alt,           }, "k",
+    --     function ()
+    --         awful.client.focus.byidx(-1)
+    --     end,
+    --     {description = "focus previous by index", group = "client"}
+    -- ),
 
     -- By-direction client focus
     awful.key({ keys.mod }, "j",
@@ -100,10 +100,12 @@ globalkeys = mytable.join(
               {description = "swap with next client by index", group = "client"}),
     awful.key({ keys.mod, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
               {description = "swap with previous client by index", group = "client"}),
-    awful.key({ keys.mod, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
-              {description = "focus the next screen", group = "screen"}),
-    awful.key({ keys.mod, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
-              {description = "focus the previous screen", group = "screen"}),
+
+    -- awful.key({ keys.mod, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
+    --           {description = "focus the next screen", group = "screen"}),
+    -- awful.key({ keys.mod, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
+    --           {description = "focus the previous screen", group = "screen"}),
+
     awful.key({ keys.mod,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
     awful.key({ keys.mod,           }, "Tab",
@@ -130,56 +132,57 @@ globalkeys = mytable.join(
         end,
         {description = "toggle wibox", group = "awesome"}),
 
-    -- On-the-fly useless gaps change
-    awful.key({ keys.alt, "Control" }, "+", function () lain.util.useless_gaps_resize(1) end,
-              {description = "increment useless gaps", group = "tag"}),
-    awful.key({ keys.alt, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end,
-              {description = "decrement useless gaps", group = "tag"}),
+    -- -- On-the-fly useless gaps change
+    -- awful.key({ keys.alt, "Control" }, "+", function () lain.util.useless_gaps_resize(1) end,
+    --           {description = "increment useless gaps", group = "tag"}),
+    -- awful.key({ keys.alt, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end,
+    --           {description = "decrement useless gaps", group = "tag"}),
 
-    -- Dynamic tagging
-    awful.key({ keys.mod, "Shift" }, "n", function () lain.util.add_tag() end,
-              {description = "add new tag", group = "tag"}),
-    awful.key({ keys.mod, "Shift" }, "r", function () lain.util.rename_tag() end,
-              {description = "rename tag", group = "tag"}),
-    awful.key({ keys.mod, "Shift" }, "Left", function () lain.util.move_tag(-1) end,
-              {description = "move tag to the left", group = "tag"}),
-    awful.key({ keys.mod, "Shift" }, "Right", function () lain.util.move_tag(1) end,
-              {description = "move tag to the right", group = "tag"}),
-    awful.key({ keys.mod, "Shift" }, "d", function () lain.util.delete_tag() end,
-              {description = "delete tag", group = "tag"}),
+    -- -- Dynamic tagging
+    -- awful.key({ keys.mod, "Shift" }, "n", function () lain.util.add_tag() end,
+    --           {description = "add new tag", group = "tag"}),
+    -- awful.key({ keys.mod, "Shift" }, "r", function () lain.util.rename_tag() end,
+    --           {description = "rename tag", group = "tag"}),
+    -- awful.key({ keys.mod, "Shift" }, "Left", function () lain.util.move_tag(-1) end,
+    --           {description = "move tag to the left", group = "tag"}),
+    -- awful.key({ keys.mod, "Shift" }, "Right", function () lain.util.move_tag(1) end,
+    --           {description = "move tag to the right", group = "tag"}),
+    -- awful.key({ keys.mod, "Shift" }, "d", function () lain.util.delete_tag() end,
+    --           {description = "delete tag", group = "tag"}),
 
     -- Standard program
     awful.key({ keys.mod,           }, "Return", function () awful.spawn(apps.default.terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ keys.mod, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
-    awful.key({ keys.mod, "Shift"   }, "q", awesome.quit,
-              {description = "quit awesome", group = "awesome"}),
+    -- awful.key({ keys.mod, "Shift"   }, "q", awesome.quit,
+    --           {description = "quit awesome", group = "awesome"}),
 
-    awful.key({ keys.mod, keys.alt    }, "l",     function () awful.tag.incmwfact( 0.05)          end,
-              {description = "increase master width factor", group = "layout"}),
-    awful.key({ keys.mod, keys.alt    }, "h",     function () awful.tag.incmwfact(-0.05)          end,
-              {description = "decrease master width factor", group = "layout"}),
-    awful.key({ keys.mod, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
-              {description = "increase the number of master clients", group = "layout"}),
-    awful.key({ keys.mod, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
-              {description = "decrease the number of master clients", group = "layout"}),
-    awful.key({ keys.mod, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
-              {description = "increase the number of columns", group = "layout"}),
-    awful.key({ keys.mod, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
-              {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ keys.mod,           }, "space", function () awful.layout.inc( 1)                end,
+    -- awful.key({ keys.mod, keys.alt    }, "l",     function () awful.tag.incmwfact( 0.05)          end,
+    --           {description = "increase master width factor", group = "layout"}),
+    -- awful.key({ keys.mod, keys.alt    }, "h",     function () awful.tag.incmwfact(-0.05)          end,
+    --           {description = "decrease master width factor", group = "layout"}),
+    -- awful.key({ keys.mod, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
+    --           {description = "increase the number of master clients", group = "layout"}),
+    -- awful.key({ keys.mod, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
+    --           {description = "decrease the number of master clients", group = "layout"}),
+    -- awful.key({ keys.mod, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
+    --           {description = "increase the number of columns", group = "layout"}),
+    -- awful.key({ keys.mod, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
+    --           {description = "decrease the number of columns", group = "layout"}),
+
+    awful.key({ keys.mod,           }, "l", function () awful.layout.inc( 1)                end,
               {description = "select next", group = "layout"}),
-    awful.key({ keys.mod, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
-              {description = "select previous", group = "layout"}),
+    -- awful.key({ keys.mod, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
+    --           {description = "select previous", group = "layout"}),
 
-    awful.key({ keys.mod, "Control" }, "n", function ()
-        local c = awful.client.restore()
-        -- Focus restored client
-        if c then
-            c:emit_signal("request::activate", "key.unminimize", {raise = true})
-        end
-    end, {description = "restore minimized", group = "client"}),
+    -- awful.key({ keys.mod, "Control" }, "n", function ()
+    --     local c = awful.client.restore()
+    --     -- Focus restored client
+    --     if c then
+    --         c:emit_signal("request::activate", "key.unminimize", {raise = true})
+    --     end
+    -- end, {description = "restore minimized", group = "client"}),
 
     -- -- Dropdown application
     -- awful.key({ keys.mod, }, "z", function () awful.screen.focused().quake:toggle() end,
@@ -282,21 +285,21 @@ globalkeys = mytable.join(
               {description = "copy gtk to terminal", group = "hotkeys"}),
 
     --Menubar
-    awful.key({ keys.mod }, "p", function() menubar.show() end,
+    awful.key({ keys.mod }, "x", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
 
-    --dmenu
-    awful.key({ keys.mod }, "r", function ()
-                                    os.execute(string.format("dmenu_run -i -fn 'Monospace' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
-                                    beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus))
-                                end,
-              {description = "show dmenu", group = "launcher"}),
+    -- --dmenu
+    -- awful.key({ keys.mod }, "r", function ()
+    --                                 os.execute(string.format("dmenu_run -i -fn 'Monospace' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
+    --                                 beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus))
+    --                             end,
+    --           {description = "show dmenu", group = "launcher"}),
     --
     -- alternatively use rofi, a dmenu-like application with more features
     -- check https://github.com/DaveDavenport/rofi for more details
     --rofi
     awful.key({ keys.mod }, "z", function () os.execute(apps.default.win_launcher) end, {description = "show window", group = "launcher"}),
-    awful.key({ keys.mod }, "x", function () os.execute(apps.default.app_launcher) end, {description = "show app", group = "launcher"})
+    awful.key({ keys.mod }, "space", function () os.execute(apps.default.app_launcher) end, {description = "show app", group = "launcher"})
 )
 
 clientkeys = mytable.join(

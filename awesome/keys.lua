@@ -1,3 +1,4 @@
-return { mod = "Mod4", 
-        alt = "Mod1" 
+return { 
+	mod = "Mod4", 
+	alt = "Mod1" 
 }
