@@ -285,8 +285,7 @@ globalkeys = mytable.join(
               {description = "copy gtk to terminal", group = "hotkeys"}),
 
     --Menubar
-    awful.key({ keys.mod }, "x", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"}),
+    awful.key({ "Control"}, "space", function() menubar.show() end, {description = "show the menubar", group = "launcher"}),
 
     -- --dmenu
     -- awful.key({ keys.mod }, "r", function ()
@@ -298,7 +297,7 @@ globalkeys = mytable.join(
     -- alternatively use rofi, a dmenu-like application with more features
     -- check https://github.com/DaveDavenport/rofi for more details
     --rofi
-    awful.key({ keys.mod }, "z", function () os.execute(apps.default.win_launcher) end, {description = "show window", group = "launcher"}),
+    -- awful.key({ keys.mod }, "z", function () os.execute(apps.default.win_launcher) end, {description = "show window", group = "launcher"}),
     awful.key({ keys.mod }, "space", function () os.execute(apps.default.app_launcher) end, {description = "show app", group = "launcher"})
 )
 
@@ -345,58 +344,88 @@ clientkeys = mytable.join(
             c.maximized_horizontal = not c.maximized_horizontal
             c:raise()
         end ,
-        {description = "(un)maximize horizontally", group = "client"})
+        {description = "(un)maximize horizontally", group = "client"}),
+    -- Move Client to left
+    awful.key({ "Control", "Shift"}, "Left",
+        function (c)
+            -- if c.focus then
+                local index = c.screen.selected_tag.index
+                local tag = c.screen.tags[index-1]
+                if tag then
+                    c:move_to_tag(tag)
+                end
+            --   then move the focus to that tag
+                awful.tag.viewprev()
+            -- end
+        end,
+        {description = "move client to left tag", group = "tag"}),
+    -- Move Client to right
+    awful.key({ "Control", "Shift"}, "Right",
+        function (c)
+            -- if c then
+                local index = c.screen.selected_tag.index
+                local tag = c.screen.tags[index+1]
+                if tag then
+                    c:move_to_tag(tag)
+                end
+            --   then move the focus to that tag
+                awful.tag.viewnext()
+            -- end
+        end,
+        {description = "move client to right tag", group = "tag"})
 )
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
-for i = 1, 9 do
-    globalkeys = mytable.join(globalkeys,
-        -- View tag only.
-        awful.key({ keys.mod }, "#" .. i + 9,
-                  function ()
-                        local screen = awful.screen.focused()
-                        local tag = screen.tags[i]
-                        if tag then
-                           tag:view_only()
-                        end
-                  end,
-                  {description = "view tag #"..i, group = "tag"}),
-        -- Toggle tag display.
-        awful.key({ keys.mod, "Control" }, "#" .. i + 9,
-                  function ()
-                      local screen = awful.screen.focused()
-                      local tag = screen.tags[i]
-                      if tag then
-                         awful.tag.viewtoggle(tag)
-                      end
-                  end,
-                  {description = "toggle tag #" .. i, group = "tag"}),
-        -- Move client to tag.
-        awful.key({ keys.mod, "Shift" }, "#" .. i + 9,
-                  function ()
-                      if client.focus then
-                          local tag = client.focus.screen.tags[i]
-                          if tag then
-                              client.focus:move_to_tag(tag)
-                          end
-                     end
-                  end,
-                  {description = "move focused client to tag #"..i, group = "tag"}),
-        -- Toggle tag on focused client.
-        awful.key({ keys.mod, "Control", "Shift" }, "#" .. i + 9,
-                  function ()
-                      if client.focus then
-                          local tag = client.focus.screen.tags[i]
-                          if tag then
-                              client.focus:toggle_tag(tag)
-                          end
-                      end
-                  end,
-                  {description = "toggle focused client on tag #" .. i, group = "tag"})
-    )
-end
+-- for i = 1, 9 do
+--     globalkeys = mytable.join(globalkeys,
+--         -- -- View tag only.
+--         -- awful.key({ keys.mod }, "#" .. i + 9,
+--         --           function ()
+--         --                 local screen = awful.screen.focused()
+--         --                 local tag = screen.tags[i]
+--         --                 if tag then
+--         --                    tag:view_only()
+--         --                 end
+--         --           end,
+--         --           {description = "view tag #"..i, group = "tag"}),
+--         -- -- Toggle tag display.
+--         -- awful.key({ keys.mod, "Control" }, "#" .. i + 9,
+--         --           function ()
+--         --               local screen = awful.screen.focused()
+--         --               local tag = screen.tags[i]
+--         --               if tag then
+--         --                  awful.tag.viewtoggle(tag)
+--         --               end
+--         --           end,
+--         --           {description = "toggle tag #" .. i, group = "tag"}),
+--         -- -- Move client to tag.
+--         -- awful.key({ "Control", "Shift" }, "#" .. i + 9,
+--         --           function ()
+--         --               if client.focus then
+--         --                   local tag = client.focus.screen.tags[i]
+--         --                   if tag then
+--         --                       client.focus:move_to_tag(tag)
+--         --                   end
+--         --              end
+--         --           end,
+--         --           {description = "move focused client to tag #"..i, group = "tag"}),
+       
+
+--         -- -- Toggle tag on focused client.
+--         -- awful.key({ keys.mod, "Control", "Shift" }, "#" .. i + 9,
+--         --           function ()
+--         --               if client.focus then
+--         --                   local tag = client.focus.screen.tags[i]
+--         --                   if tag then
+--         --                       client.focus:toggle_tag(tag)
+--         --                   end
+--         --               end
+--         --           end,
+--         --           {description = "toggle focused client on tag #" .. i, group = "tag"})
+--     )
+-- end
 
 clientbuttons = mytable.join(
     awful.button({ }, 1, function (c)
