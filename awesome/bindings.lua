@@ -171,7 +171,7 @@ globalkeys = mytable.join(
     -- awful.key({ keys.mod, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
     --           {description = "decrease the number of columns", group = "layout"}),
 
-    awful.key({ keys.mod,           }, "l", function () awful.layout.inc( 1)                end,
+    awful.key({ keys.mod, keys.alt     }, "space", function () awful.layout.inc( 1)                end,
               {description = "select next", group = "layout"}),
     -- awful.key({ keys.mod, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
     --           {description = "select previous", group = "layout"}),
@@ -285,7 +285,7 @@ globalkeys = mytable.join(
               {description = "copy gtk to terminal", group = "hotkeys"}),
 
     --Menubar
-    awful.key({ "Control"}, "space", function() menubar.show() end, {description = "show the menubar", group = "launcher"}),
+    -- awful.key({ "Control"}, "space", function() menubar.show() end, {description = "show the menubar", group = "launcher"}),
 
     -- --dmenu
     -- awful.key({ keys.mod }, "r", function ()
@@ -297,8 +297,8 @@ globalkeys = mytable.join(
     -- alternatively use rofi, a dmenu-like application with more features
     -- check https://github.com/DaveDavenport/rofi for more details
     --rofi
-    -- awful.key({ keys.mod }, "z", function () os.execute(apps.default.win_launcher) end, {description = "show window", group = "launcher"}),
-    awful.key({ keys.mod }, "space", function () os.execute(apps.default.app_launcher) end, {description = "show app", group = "launcher"})
+    awful.key({ keys.mod }, "space", function () os.execute(apps.default.app_launcher) end, {description = "show app", group = "launcher"}),
+    awful.key({ "Control" }, "space", function () os.execute(apps.default.app_launcher) end, {description = "show app", group = "launcher"})
 )
 
 clientkeys = mytable.join(
@@ -314,9 +314,9 @@ clientkeys = mytable.join(
               {description = "close", group = "client"}),
     awful.key({ keys.mod, "Control" }, "space",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
-    awful.key({ keys.mod, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
+    awful.key({ "Control", "Shift" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
-    awful.key({ keys.mod,           }, "o",      function (c) c:move_to_screen()               end,
+    awful.key({ "Control", "Shift" }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
     awful.key({ keys.mod,           }, "t",      function (c) c.ontop = not c.ontop            end,
               {description = "toggle keep on top", group = "client"}),
