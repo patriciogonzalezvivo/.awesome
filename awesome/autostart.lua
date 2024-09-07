@@ -14,7 +14,7 @@ end
 
 -- Autostart programs
 run_once({ "xrandr --output DSI-1 --rotate right"}) -- Rotate screen for uConsole
--- run_once({ "picom --config ~/.awesome/picom.conf" }) -- Enable transparency
+run_once({ "picom --config ~/.awesome/picom.conf" }) -- Enable transparency
 run_once({ "unclutter -root" }) -- Hide mouse when not in use
 
 -- This function implements the XDG autostart specification

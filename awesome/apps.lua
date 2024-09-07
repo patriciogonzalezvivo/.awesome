@@ -3,10 +3,11 @@ local rofi_themes   = {
     "Arc-Dark",        -- 1
     'arthur',          -- 2
     'Monokai',         -- 3
-    'fancy',			-- 4
-	'.awesome/rofi.rasi'
+    'fancy',           -- 4
+    'rounded-nord-dark', -- 5
+    '.awesome/rofi.rasi'
 }
-local rofi_theme    =  rofi_themes[3]
+local rofi_theme    =  rofi_themes[5]
 
 return {
 	--- Default Applications

@@ -1,12 +1,12 @@
 configuration {
-    font:           				"Roboto Medium 10";
+    font:                           "Roboto Medium 10";
     show-icons:                     true;
-	icon-theme: 					"WhiteSur-dark";
-    display-drun: 					"";
+    icon-theme:                     "WhiteSur-dark";
+    display-drun:                   "";
     drun-display-format:            "{icon} {name}";
     disable-history:                false;
-	sidebar-mode: 					false;
-	click-to-exit: 					true;
+    sidebar-mode:                   false;
+    click-to-exit:                  true;
     location:                       6;
 }
 
@@ -28,18 +28,18 @@ window {
 }
 
 prompt {
-    enabled: 						true;
-	background-color: 				@BG;
-	text-color: 					@FG;
+    enabled:                        true;
+    background-color:               @BG;
+    text-color:                     @FG;
 }
 
 textbox-prompt-colon {
-	expand: 						false;
-	str: 							"";
+    expand:                         false;
+    str:                            "";
     background-color:               @BGA;
     text-color:                     @FG;
     padding:                        10px 0px 0px 12px;
-	font:							"Material Icons Round 16";
+    font:                           "Material Icons Round 16";
 }
 
 entry {
@@ -49,13 +49,13 @@ entry {
     expand:                         true;
     horizontal-align:               0;
     placeholder:                    "Type here to search";
-    font:							"Roboto Bold 12";
+    font:                           "Roboto Bold 12";
     blink:                          true;
     padding:                        10px;
 }
 
 inputbar {
-	children: 						[ textbox-prompt-colon, entry ];
+    children:                       [ textbox-prompt-colon, entry ];
     spacing:                        0px;
     background-color:               @BGA;
     text-color:                     @FG;
@@ -74,7 +74,7 @@ case-indicator {
 listview {
     background-color:               #00000000;
     columns:                        5;
-    lines:							5;
+    lines:                          5;
     spacing:                        4px;
     cycle:                          false;
     dynamic:                        true;
@@ -84,7 +84,7 @@ listview {
 mainbox {
     background-color:               @BG;
     children:                       [ inputbar, listview ];
-    spacing:                       	40px;
+    spacing:                        40px;
     padding:                        30px;
 }
 
@@ -97,16 +97,16 @@ element {
 }
 
 element-icon {
-    background-color: 				inherit;
-    text-color:       				inherit;
+    background-color:               inherit;
+    text-color:                     inherit;
     horizontal-align:               0.5;
     vertical-align:                 0.5;
     size:                           48px;
 }
 
 element-text {
-    background-color: 				inherit;
-    text-color:       				inherit;
+    background-color:               inherit;
+    text-color:                     inherit;
     expand:                         true;
     horizontal-align:               0.5;
     vertical-align:                 0.5;

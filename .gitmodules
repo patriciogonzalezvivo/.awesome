@@ -19,3 +19,6 @@
 [submodule "awesome/awesome-wm-widgets"]
 	path = awesome/awesome-wm-widgets
 	url = https://github.com/streetturtle/awesome-wm-widgets.git
+[submodule "rofi-themes-collection"]
+	path = rofi-themes-collection
+	url = https://github.com/lr-tech/rofi-themes-collection.git

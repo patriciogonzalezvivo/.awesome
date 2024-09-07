@@ -29,6 +29,12 @@ ln -sf ~/.awesome/awesome awesome
 ln -sf ~/.awesome/compton.conf compton.conf
 
 cd ~
+mkdir -p .local/share/rofi/
+cp -r .awesome/rofi-themes-collection/themes .local/share/rofi
+
+# rofi-theme-selector
+
+cd ~
 
 # TODO:
 # - install latest version of rofi https://github.com/davatorium/rofi/
